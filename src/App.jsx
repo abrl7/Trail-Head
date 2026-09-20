@@ -1,11 +1,31 @@
+import {createBrowserRouter,RouterProvider} from "react-router-dom";
+import RootLayout from './layouts/RootLayout.jsx';
+import TrailsPage from './components/TrailsPage.jsx';
+import LogTrailPage from './components/LogTrailPage.jsx';
+import StatsPage from './components/StatsPage.jsx';
+import NotFound from './components/NotFound.jsx';
+import TrailDetailPage from './components/TrailDetailPage.jsx';
 
+
+  const router=createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    errorElement: <NotFound />, // Automatically catches routing errors
+    children: [
+      { index: true, element: <TrailsPage /> }, // Renders at "/"
+      { path: 'trails', element: <TrailsPage /> },
+      { path: 'log', element: <LogTrailPage /> },
+      { path: 'stats', element: <StatsPage /> }, 
+      { path: 'trails/:id', element: <TrailDetailPage /> },
+    ],
+  }
+]);
 function App() {
- 
-
+  
   return (
     <>
-    
-      <div > This is homepage</div>
+    <RouterProvider router={router} />
     </>
   )
 }
