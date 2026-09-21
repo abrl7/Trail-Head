@@ -21,8 +21,9 @@ import TrailDetailPage from './components/TrailDetailPage.jsx';
     ],
   }
 ]);
+
 function App() {
-  
+
   return (
     <>
     <RouterProvider router={router} />

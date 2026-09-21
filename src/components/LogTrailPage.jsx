@@ -69,7 +69,7 @@ const LogTrailPage = () => {
     <>
       <div className="formContainer m-5 ">
 
-        <form className='bg-pink-300 mx-auto w-[60vw] p-5 rounded-xl min-h-[60vh]' action="" onSubmit={addTrail}>
+        <form className='bg-blue-50 mx-auto w-[60vw] p-5 rounded-xl min-h-[60vh]' action="" onSubmit={addTrail}>
 
           <div className='act-form flex flex-col gap-5'>
 

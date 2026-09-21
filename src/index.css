@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .active-nav {
-  color: #14d4ee;
+  color:rgb(20, 86, 185);
   font-weight: bold;
   text-decoration: underline;
   text-underline-offset: 10px;
