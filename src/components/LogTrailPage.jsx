@@ -2,14 +2,17 @@ import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
+import {useContext} from 'react';
+import trailContext from '../context/trailContext.js';
 
 // 1. without react-hook-form,
 const LogTrailPage = () => {
 
   const navigate = useNavigate();
 
+  const {trails,settrails}=useContext(trailContext)
 
-  const [trails, settrails] = useState([])
+
   const [reqTrailName, setreqTrailName] = useState(true)
 
   const [trailForm, settrailForm] = useState({
@@ -122,7 +125,7 @@ const LogTrailPage = () => {
 
             <div className='flex gap-1'>
               <label className='font-bold p-1' htmlFor="walked">Walked:</label>
-              <input className='bg-white p-2 rounded-2xl' type="checkbox" placeholder="Enter trail name" name="walked" id="walked" value={trailForm.walked} onChange={handleChange} />
+              <input className='bg-white p-2 rounded-2xl' type="checkbox" placeholder="Enter trail name" name="walked" id="walked" checked={trailForm.walked} onChange={handleChange} />
             </div>
 
             <div className='flex flex-col gap-1'>
