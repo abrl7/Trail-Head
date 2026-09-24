@@ -1,22 +1,17 @@
 import React from 'react'
 import { useState } from 'react';
+import { useContext } from 'react';
+import trailContext from '../context/trailContext.js';
+import TrailGrid from './TrailGrid.jsx';
 
-const TrailsPage = () => {
+const TrailsPage = ({ trails, checkDifficulty }) => {
 
-  const [trials, setTrials] = useState([{
-    "id": "tr-002",
-    "name": "Mardi Himal",
-    "region": "Annapurna",
-    "distance": 44,
-    "elevation": 4500,
-    "difficulty": "Moderate",
-    "days": 5,
-    "season": "Mar - May",
-    "walked": true,
-  }])
+  // const {trails}=useContext(trailContext)
 
   return (
-    <div>TrailsPage</div>
+    <>
+    <TrailGrid trails={trails} checkDifficulty={checkDifficulty}/>
+    </>
   )
 }
 
