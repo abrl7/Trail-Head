@@ -27,7 +27,7 @@ const TrailCard = ({trail}) => {
             {/* div3 */}
             <div className="note p-2">
               <div className='p-2 flex flex-col rounded-2xl bg-slate-200'>
-                <p className='text-sm font-bold text-gray-600'>Note:</p> <p className='text-md overflow-y-auto break-words whitespace-pre-wrap'>{trail?.note}</p>
+                <p className='text-sm font-bold text-gray-600'>Note:</p> <p className='text-md overflow-y-auto wrap-break-word whitespace-pre-wrap'>{trail?.note}</p>
               </div>
             </div>
           </div>

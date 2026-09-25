@@ -7,7 +7,7 @@ const SearchBar = ({ q, onSearchChange }) => {
 
     return (
         <>
-            <div className='search-bar m-2 relative w-full max-w-md mx-auto'>
+            <div className='search-bar flex items-center m-2 relative '>
                 <svg
                     className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
                     fill="none"
@@ -23,7 +23,7 @@ const SearchBar = ({ q, onSearchChange }) => {
                     value={q}
                     onChange={(e) => onSearchChange(e.target.value)}
                     placeholder="Search trails by name or region..."
-                    className="w-full pl-10 pr-4 py-2 rounded-full bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-[30vw] pl-10 pr-4 py-2 rounded-full bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
             </div>
         </>

@@ -4,9 +4,9 @@ const DIFFICULTIES = ['All', 'Easy', 'Moderate', 'Hard'];
 
 const FilterSidebar = ({ region, difficulty, onRegionChange, onDifficultyChange, onClear }) => {
   return (
-    <div className="w-56 shrink-0 bg-slate-100 rounded-2xl p-4 flex flex-col gap-4 h-fit">
-      <div>
-        <p className="text-sm font-bold text-gray-600 mb-1">Region</p>
+    <div className="flex p-2 gap-2">
+      <div className="flex gap-2 items-center p-4">
+        <p className="text-sm font-bold">Region:</p>
         <select
           value={region}
           onChange={(e) => onRegionChange(e.target.value)}
@@ -18,8 +18,8 @@ const FilterSidebar = ({ region, difficulty, onRegionChange, onDifficultyChange,
         </select>
       </div>
 
-      <div>
-        <p className="text-sm font-bold text-gray-600 mb-1">Difficulty</p>
+      <div className="flex gap-2 items-center  p-4">
+        <p className="text-sm font-bold">Difficulty:</p>
         <select
           value={difficulty}
           onChange={(e) => onDifficultyChange(e.target.value)}
@@ -33,9 +33,9 @@ const FilterSidebar = ({ region, difficulty, onRegionChange, onDifficultyChange,
 
       <button
         onClick={onClear}
-        className="bg-red-500 text-white p-2 rounded-xl text-sm font-bold"
+        className="  text-white p-2 rounded-full text-sm font-bold"
       >
-        Clear filters
+       <p className="bg-red-600 rounded-full p-2">Clear filters</p> 
       </button>
     </div>
   );
