@@ -1,24 +1,10 @@
 import React from 'react'
+import { checkDifficulty } from '../utils/checkDifficulty'
 
-const TrailCard = ({trails,checkDifficulty}) => {
+const TrailCard = ({trail}) => {
   return (
     <>
-     {trails.map((trail, index) => {
-        // return <div key={trail.trailId} className='bg-white p-4 rounded-lg shadow-md mb-4'>
-        //   <h2 className='text-xl font-bold'>{trail.trailName}</h2>
-        //   <p className='text-gray-600'>{trail.region}</p>
-        //   <p className='text-gray-600'>Distance: {trail.distance} km</p>
-        //   <p className='text-gray-600'>Elevation: {trail.elevation} m</p>
-        //   <p className='text-gray-600'>Difficulty: {trail.difficulty}</p>
-        //   <p className='text-gray-600'>Days: {trail.days}</p>
-        //   <p className='text-gray-600'>Season: {trail.season}</p>
-        //   <p className='text-gray-600'>Walked: {trail.walked ? 'Yes' : 'No'}</p>
-        //   <p className='text-gray-600'>Note: {trail.note}</p>
-        // </div>
-        return (
-          
-          
-          <div className='bg-blue-50 mx-auto w-full p-2 rounded-lg shadow-md m-2' key={trail.trailId}>
+          <div className='bg-blue-50 mx-auto w-full p-2 rounded-lg shadow-md m-2'>
             {/* div1 */}
             <div className="heading flex flex-col gap-2 p-2">
               <p className='text-sm font-bold text-gray-600'>{trail?.region}</p>
@@ -26,7 +12,7 @@ const TrailCard = ({trails,checkDifficulty}) => {
               <div className='flex gap-2'>
 
                 <p className={trail?.walked ? "bg-green-600 text-white px-2 text-sm p-1 rounded-lg" : "bg-red-600 px-2 text-white text-sm p-1 rounded-lg"}>{trail?.walked ? 'Walked' : 'Not Walked'}</p>
-                <p className={checkDifficulty(trail.difficulty)}>{trail?.difficulty}</p>
+                <p className={checkDifficulty(trail?.difficulty)}>{trail?.difficulty}</p>
               </div>
             </div>
 
@@ -46,8 +32,8 @@ const TrailCard = ({trails,checkDifficulty}) => {
             </div>
           </div>
           
-        )
-      })}
+        
+      
     </>
   )
 }

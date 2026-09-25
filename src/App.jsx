@@ -55,23 +55,17 @@ function App() {
   // }
 
   //2.claude daju ko solution
-  const difficultyStyles = {
-    Easy: "bg-green-900 text-green-400 text-sm p-1 rounded-lg",
-    Moderate: "bg-yellow-900 text-yellow-400 text-sm p-1 rounded-lg",
-    Difficult: "bg-red-900 text-red-400 text-sm p-1 rounded-lg",
-  }
-
-  const checkDifficulty = (t) => difficultyStyles[t] || "bg-black"
+  
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RootLayout />}>
-          <Route index element={<TrailsPage trails={trails} checkDifficulty={checkDifficulty} />} />
-          <Route path="trails" element={<TrailsPage trails={trails} checkDifficulty={checkDifficulty} />} />
+          <Route index element={<TrailsPage trails={trails} />} />
+          <Route path="trails" element={<TrailsPage trails={trails}  />} />
           <Route path="log" element={<LogTrailPage trails={trails} settrails={settrails} />} />
           <Route path="stats" element={<StatsPage trails={trails} />} />
-          <Route path="trails/:id" element={<TrailDetailPage trails={trails} checkDifficulty={checkDifficulty} />} />
+          <Route path="trails/:id" element={<TrailDetailPage trails={trails} />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

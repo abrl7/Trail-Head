@@ -2,8 +2,9 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useContext } from 'react';
 import trailContext from '../context/trailContext.js';
+import { checkDifficulty } from '../utils/checkDifficulty.js';
 
-const TrailDetailPage = ({trails,checkDifficulty}) => {
+const TrailDetailPage = ({trails}) => {
   const { id } = useParams();
 
   // const { trails } = useContext(trailContext);
