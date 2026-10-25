@@ -89,7 +89,7 @@ const TrailsPage = ({ trails }) => {
             onDifficultyChange={(val) => updateParam('difficulty', val)}
             onClear={clearFilters}
           />
-          
+
         </div>
         <div>
           {matchTrail.length === 0 ? (

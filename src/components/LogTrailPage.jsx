@@ -23,7 +23,7 @@ const LogTrailPage = ({trails,settrails}) => {
     "difficulty": "",
     "days": "",
     "season": "",
-    "walked": true,
+    "walked": false,
     "note": ""
 
   })
