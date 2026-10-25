@@ -41,6 +41,12 @@ import { useState } from "react";
 function App() {
   const [trails, settrails] = useState([])
 
+  const toggleWalked = (trailId) => {
+    settrails((prev) =>
+      prev.map((t) => (t.trailId === trailId ? { ...t, walked: !t.walked } : t))
+    )
+  }
+
   //1.mero solution for colored element for difficulty
   // const checkDifficulty=(t)=>{
   //   if (t==='Easy') {
@@ -61,11 +67,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RootLayout />}>
-          <Route index element={<TrailsPage trails={trails} />} />
-          <Route path="trails" element={<TrailsPage trails={trails}  />} />
+          <Route index element={<TrailsPage trails={trails} onToggleWalked={toggleWalked} />} />
+          <Route path="trails" element={<TrailsPage trails={trails} onToggleWalked={toggleWalked}  />} />
           <Route path="log" element={<LogTrailPage trails={trails} settrails={settrails} />} />
           <Route path="stats" element={<StatsPage trails={trails} />} />
-          <Route path="trails/:id" element={<TrailDetailPage trails={trails} />} />
+          <Route path="trails/:id" element={<TrailDetailPage trails={trails} onToggleWalked={toggleWalked} />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
