@@ -3,8 +3,10 @@ import { useParams } from 'react-router-dom';
 import { useContext } from 'react';
 import trailContext from '../context/trailContext.js';
 import { checkDifficulty } from '../utils/checkDifficulty.js';
+import DifficultyBadge from './DifficultyBadge.jsx';
+import { walkedCardBg } from '../utils/walkedStyle.js';
 
-const TrailDetailPage = ({trails}) => {
+const TrailDetailPage = ({trails, onToggleWalked}) => {
   const { id } = useParams();
 
   // const { trails } = useContext(trailContext);
@@ -17,7 +19,7 @@ const TrailDetailPage = ({trails}) => {
   }
 
   return (
-    <div className='bg-blue-50 mx-auto w-2/3 p-4 rounded-lg shadow-md m-4'>
+    <div className={`${walkedCardBg(trail.walked)} mx-auto w-2/3 p-4 rounded-lg shadow-md m-4`}>
       {/* div1 */}
       <div className="heading flex flex-col gap-2 p-2">
         <p className='text-sm font-bold text-gray-600'>{trail?.region}</p>
@@ -25,7 +27,15 @@ const TrailDetailPage = ({trails}) => {
         <div className='flex gap-2'>
 
         <p className={trail?.walked ? "bg-green-600 text-white px-2 text-sm p-1 rounded-lg":"bg-red-600 px-2 text-white text-sm p-1 rounded-lg"}>{trail?.walked ? 'Walked' : 'Not Walked'}</p>
-        <p className={checkDifficulty(trail.difficulty)}>{trail?.difficulty}</p>
+        {/* <p className={checkDifficulty(trail.difficulty)}>{trail?.difficulty}</p> */}
+        <DifficultyBadge difficulty={trail?.difficulty} />
+
+        <button
+            onClick={() => onToggleWalked(trail.trailId)}
+            className='ml-auto text-sm px-3 py-1 rounded-lg bg-white border border-gray-300 hover:bg-gray-100'
+          >
+            {trail.walked ? 'Mark as not walked' : 'Mark as walked'}
+          </button>
         </div>
       </div>
 

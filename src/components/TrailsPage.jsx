@@ -6,7 +6,7 @@ import SearchBar from './SearchBar.jsx';
 import FilterSidebar from './FilterSidebar.jsx'
 import { useSearchParams } from 'react-router-dom';
 
-const TrailsPage = ({ trails }) => {
+const TrailsPage = ({ trails,onToggleWalked }) => {
 
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -95,7 +95,7 @@ const TrailsPage = ({ trails }) => {
           {matchTrail.length === 0 ? (
             <div className="text-red-500 text-center p-6">No matched trails</div>
           ) : (
-            <TrailGrid trails={matchTrail} />
+            <TrailGrid trails={matchTrail} onToggleWalked={onToggleWalked} />
           )}
         </div>
       </div>
