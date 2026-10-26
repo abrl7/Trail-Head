@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useContext } from 'react';
-import trailContext from '../context/trailContext.js';
+
+import { useNavigate } from 'react-router-dom'   // add to your existing react-router-dom import
+import EmptyState from './EmptyState.jsx'
 import TrailGrid from './TrailGrid.jsx';
 import SearchBar from './SearchBar.jsx';
 import FilterSidebar from './FilterSidebar.jsx'
 import { useSearchParams } from 'react-router-dom';
 
-const TrailsPage = ({ trails,onToggleWalked }) => {
+const TrailsPage = ({ trails, onToggleWalked }) => {
 
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -37,6 +37,37 @@ const TrailsPage = ({ trails,onToggleWalked }) => {
     const matchesDifficulty = difficulty === 'All' || trail.difficulty === difficulty;
     return matchesSearch && matchesRegion && matchesDifficulty;
   });
+
+  const navigate = useNavigate()
+
+  // Build a readable description of whatever is currently filtering the list
+  const activeFilters = []
+  if (q) activeFilters.push(`search "${q}"`)
+  if (region !== 'All') activeFilters.push(`region "${region}"`)
+  if (difficulty !== 'All') activeFilters.push(`difficulty "${difficulty}"`)
+
+  let content
+  if (trails.length === 0) {
+    content = (
+      <EmptyState
+        title="No trails logged yet"
+        message="Your trail list is empty. Log your first trail to see it here."
+        actionLabel="Log a trail"
+        onAction={() => navigate('/log')}
+      />
+    )
+  } else if (matchTrail.length === 0) {
+    content = (
+      <EmptyState
+        title="No trails match your filters"
+        message={`Nothing matches ${activeFilters.join(', ')}. Try loosening a filter or clear them all.`}
+        actionLabel="Clear filters"
+        onAction={clearFilters}
+      />
+    )
+  } else {
+    content = <TrailGrid trails={matchTrail} onToggleWalked={onToggleWalked} />
+  }
 
   // const {trails}=useContext(trailContext)
 
@@ -92,11 +123,12 @@ const TrailsPage = ({ trails,onToggleWalked }) => {
 
         </div>
         <div>
-          {matchTrail.length === 0 ? (
+          {/* {matchTrail.length === 0 ? (
             <div className="text-red-500 text-center p-6">No matched trails</div>
           ) : (
             <TrailGrid trails={matchTrail} onToggleWalked={onToggleWalked} />
-          )}
+          )} */}
+          {content}
         </div>
       </div>
     </>
