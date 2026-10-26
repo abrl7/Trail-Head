@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import trailContext from '../context/trailContext.js';
 
 // 1. without react-hook-form,
-const LogTrailPage = ({trails,settrails}) => {
+const LogTrailPage = ({ trails, settrails }) => {
 
   const navigate = useNavigate();
 
@@ -39,8 +39,11 @@ const LogTrailPage = ({trails,settrails}) => {
     }
     else {
       setreqTrailName(true)
+      const nextNum =
+        trails.reduce((max, t) => Math.max(max, parseInt(t.trailId.split('-')[1], 10)), 0) + 1
+
       const newTrail = {
-        trailId: generateTrailId(trails.length + 1),
+        trailId: generateTrailId(nextNum),
         ...trailForm
       }
 
@@ -94,7 +97,7 @@ const LogTrailPage = ({trails,settrails}) => {
               </select>
             </div>
 
- <div className="flex gap-2">
+            <div className="flex gap-2">
               <div className='flex flex-col gap-1 w-1/2'>
                 <label className='font-bold p-1' htmlFor="difficulty">Difficulty</label>
                 {/* <input className='bg-white p-2 rounded-2xl' type="text" placeholder="Enter region" name="region" id="region" value={trailForm.region} onChange={handleChange} /> */}
@@ -136,7 +139,7 @@ const LogTrailPage = ({trails,settrails}) => {
                 <input className='bg-white p-2 rounded-2xl w-1/2' type="number" placeholder="Enter days" name="days" id="days" value={trailForm.days} onChange={handleChange} />
               </div>
             </div>
-           
+
 
             <div className='flex gap-1'>
               <label className='font-bold p-1' htmlFor="walked">Walked:</label>

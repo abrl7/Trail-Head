@@ -2,6 +2,8 @@ import React from 'react'
 import { checkDifficulty } from '../utils/checkDifficulty'
 import DifficultyBadge from './DifficultyBadge';
 import { walkedCardBg } from '../utils/walkedStyle';
+import {useState} from 'react';
+import{ Link, useLocation } from "react-router-dom";
 
 
 const MAX_ELEVATION = 5500;
@@ -10,21 +12,25 @@ const TrailCard = ({ trail, onToggleWalked }) => {
   const elevation = Number(trail?.elevation) || 0;
   const elevationPercent = Math.min(Math.max((elevation / MAX_ELEVATION) * 100, 0), 100);
 
+  const location = useLocation()
+  const from = location.pathname + location.search
+ 
+
   return (
     <>
       <div className={`${walkedCardBg(trail.walked)} mx-auto w-full p-2 rounded-lg shadow-md m-2`}>
         {/* div1 name area */}
         <div className="heading flex flex-col gap-2 p-2">
           <p className='text-sm font-bold text-gray-600'>{trail?.region}</p>
-          <h1 className='text-3xl font-bold'>{trail?.trailName}</h1>
+          <Link to={`/trails/${trail.trailId}`} state={{ from }}><h1 className='text-3xl font-bold' >{trail?.trailName}</h1></Link>
+          
           <div className='flex gap-2'>
             <p className={trail?.walked ? "bg-green-600 text-white px-2 text-sm p-1 rounded-lg" : "bg-red-600 px-2 text-white text-sm p-1 rounded-lg"}>{trail?.walked ? 'Walked' : 'Not Walked'}</p>
             {/* <p className={checkDifficulty(trail?.difficulty)}>{trail?.difficulty}</p> */}
             <DifficultyBadge difficulty={trail?.difficulty} />
             <button
             onClick={() => onToggleWalked(trail.trailId)}
-            className='ml-auto text-sm px-3 py-1 rounded-lg bg-white border border-gray-300 hover:bg-gray-100'
-          >
+            className='ml-auto text-sm px-3 py-1 rounded-lg bg-white border border-gray-300 hover:bg-gray-100'>
             {trail.walked ? 'Mark as not walked' : 'Mark as walked'}
           </button>
           </div>
