@@ -1,4 +1,5 @@
-import {createBrowserRouter,RouterProvider} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RootLayout from './layouts/RootLayout.jsx';
 import TrailsPage from './components/TrailsPage.jsx';
 import LogTrailPage from './components/LogTrailPage.jsx';
@@ -8,31 +9,79 @@ import TrailDetailPage from './components/TrailDetailPage.jsx';
 import trailContext from './context/trailContext.js';
 import { useState } from "react";
 
-  const router=createBrowserRouter([
-  {
-    path: '/',
-    element: <RootLayout />,
-    errorElement: <NotFound />, // Automatically catches routing errors
-    children: [
-      { index: true, element: <TrailsPage /> }, // Renders at "/"
-      { path: 'trails', element: <TrailsPage /> },
-      { path: 'log', element: <LogTrailPage /> },
-      { path: 'stats', element: <StatsPage /> }, 
-      { path: 'trails/:id', element: <TrailDetailPage /> },
-    ],
-  }
-]);
+//1. using createBrowserRouter with RouterProvider
+//   const router=createBrowserRouter([
+//   {
+//     path: '/',
+//     element: <RootLayout />,
+//     errorElement: <NotFound />, // Automatically catches routing errors
+//     children: [
+//       { index: true, element: <TrailsPage  /> }, // Renders at "/"
+//       { path: 'trails', element: <TrailsPage /> },
+//       { path: 'log', element: <LogTrailPage /> },
+//       { path: 'stats', element: <StatsPage /> }, 
+//       { path: 'trails/:id', element: <TrailDetailPage /> },
+//     ],
+//   }
+// ]);
 
+// function App() {
+//   const [trails, settrails] = useState([])
+
+//   return (
+//     <>
+// {/* <trailContext.Provider value={{trails,settrails}}> */}
+//     <RouterProvider router={router}  />
+// {/* </trailContext.Provider> */}
+//     </>
+//   )
+// }
+
+//2.using browser router with routes
 function App() {
-  const [trails, settrails] = useState([])
+  const [trails, settrails] = useState(seedData)
+
+  const toggleWalked = (trailId) => {
+    settrails((prev) =>
+      prev.map((t) => (t.trailId === trailId ? { ...t, walked: !t.walked } : t))
+    )
+  }
+
+  const removeTrail = (trailId) => {
+  settrails((prev) => prev.filter((t) => t.trailId !== trailId))
+}
+
+  //1.mero solution for colored element for difficulty
+  // const checkDifficulty=(t)=>{
+  //   if (t==='Easy') {
+  //     return "bg-blue-900 text-white px-2 text-sm p-1 rounded-lg"
+  //   }else if (t==='Moderate'){
+  //     return "bg-yellow-900 text-white px-2 text-sm p-1 rounded-lg"
+  //   }else if (t==='Difficult'){
+  //     return "bg-slate-900 text-white px-2 text-sm p-1 rounded-lg"
+  //   }else{
+  //     return "bg-black"
+  //   }
+  // }
+
+
+  
 
   return (
-    <>
-<trailContext.Provider value={{trails,settrails}}>
-    <RouterProvider router={router} />
-</trailContext.Provider>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<TrailsPage trails={trails} onToggleWalked={toggleWalked} />} />
+          <Route path="trails" element={<TrailsPage trails={trails} onToggleWalked={toggleWalked}  />} />
+          <Route path="log" element={<LogTrailPage trails={trails} settrails={settrails} />} />
+          <Route path="stats" element={<StatsPage trails={trails} />} />
+          <Route path="trails/:id" element={<TrailDetailPage trails={trails} onToggleWalked={toggleWalked} onRemove={removeTrail} />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
+
 
 export default App

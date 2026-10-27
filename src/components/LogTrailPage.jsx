@@ -1,16 +1,16 @@
-import React from 'react'
+
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import {useContext} from 'react';
-import trailContext from '../context/trailContext.js';
+
+
 
 // 1. without react-hook-form,
-const LogTrailPage = () => {
+const LogTrailPage = ({ trails, settrails }) => {
 
   const navigate = useNavigate();
 
-  const {trails,settrails}=useContext(trailContext)
+  // const { trails, settrails } = useContext(trailContext)
 
 
   const [reqTrailName, setreqTrailName] = useState(true)
@@ -23,7 +23,7 @@ const LogTrailPage = () => {
     "difficulty": "",
     "days": "",
     "season": "",
-    "walked": true,
+    "walked": false,
     "note": ""
 
   })
@@ -39,8 +39,11 @@ const LogTrailPage = () => {
     }
     else {
       setreqTrailName(true)
+      const nextNum =
+        trails.reduce((max, t) => Math.max(max, parseInt(t.trailId.split('-')[1], 10)), 0) + 1
+
       const newTrail = {
-        trailId: generateTrailId(trails.length + 1),
+        trailId: generateTrailId(nextNum),
         ...trailForm
       }
 
@@ -58,7 +61,7 @@ const LogTrailPage = () => {
         "note": ""
       })
       console.log("All Trails:", [...trails, newTrail])
-      navigate(`/trails/${newTrail.trailId}`); 
+      navigate(`/trails/${newTrail.trailId}`);
     }
 
 
@@ -87,11 +90,36 @@ const LogTrailPage = () => {
               {/* <input className='bg-white p-2 rounded-2xl' type="text" placeholder="Enter region" name="region" id="region" value={trailForm.region} onChange={handleChange} /> */}
               <select className='bg-white p-2 rounded-2xl' name="region" id="region" value={trailForm.region} onChange={handleChange}>
                 <option value="">Select a region</option>
-                <option value="Region 1">Annapurna</option>
-                <option value="Region 2">Langtang</option>
-                <option value="Region 3">Khumbu</option>
-                <option value="Region 4">Manaslu</option>
+                <option value="Annapurna">Annapurna</option>
+                <option value="Langtang">Langtang</option>
+                <option value="Khumbu">Khumbu</option>
+                <option value="Manaslu">Manaslu</option>
               </select>
+            </div>
+
+            <div className="flex gap-2">
+              <div className='flex flex-col gap-1 w-1/2'>
+                <label className='font-bold p-1' htmlFor="difficulty">Difficulty</label>
+                {/* <input className='bg-white p-2 rounded-2xl' type="text" placeholder="Enter region" name="region" id="region" value={trailForm.region} onChange={handleChange} /> */}
+                <select className='bg-white p-2 rounded-2xl' name="difficulty" id="difficulty" value={trailForm.difficulty} onChange={handleChange}>
+                  <option value="">Select a difficulty</option>
+                  <option value="Easy">Easy</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Hard">Hard</option>
+                </select>
+              </div>
+
+              <div className='flex flex-col gap-1 w-1/2'>
+                <label className='font-bold p-1' htmlFor="season">Season:</label>
+                {/* <input className='bg-white p-2 rounded-2xl' type="text" placeholder="Enter region" name="region" id="region" value={trailForm.region} onChange={handleChange} /> */}
+                <select className='bg-white p-2 rounded-2xl' name="season" id="season" value={trailForm.season} onChange={handleChange}>
+                  <option value="">Select a region</option>
+                  <option value="Spring">Spring</option>
+                  <option value="Summer">Summer</option>
+                  <option value="Autumn">Autumn</option>
+                  <option value="Winter">Winter</option>
+                </select>
+              </div>
             </div>
 
             <div className='flex gap-3 ' >
@@ -112,16 +140,6 @@ const LogTrailPage = () => {
               </div>
             </div>
 
-            <div className='flex flex-col gap-1'>
-              <label className='font-bold p-1' htmlFor="difficulty">Difficulty</label>
-              {/* <input className='bg-white p-2 rounded-2xl' type="text" placeholder="Enter region" name="region" id="region" value={trailForm.region} onChange={handleChange} /> */}
-              <select className='bg-white p-2 rounded-2xl' name="difficulty" id="difficulty" value={trailForm.difficulty} onChange={handleChange}>
-                <option value="">Select a difficulty</option>
-                <option value="Easy">Easy</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Difficult">Difficult</option>
-              </select>
-            </div>
 
             <div className='flex gap-1'>
               <label className='font-bold p-1' htmlFor="walked">Walked:</label>
@@ -130,7 +148,7 @@ const LogTrailPage = () => {
 
             <div className='flex flex-col gap-1'>
               <label className='font-bold p-1' htmlFor="note">Note:</label>
-              <input className='bg-white p-2 rounded-2xl' type="textarea" placeholder="Enter note" name="note" id="note" value={trailForm.note} onChange={handleChange} />
+              <textarea className='bg-white p-2 rounded-2xl' placeholder="Enter note" name="note" id="note" value={trailForm.note} onChange={handleChange} rows={4} />
             </div>
             <div className='flex gap-1 justify-center'>
               <button className='bg-blue-500 text-white p-2 rounded-2xl' type="submit">
