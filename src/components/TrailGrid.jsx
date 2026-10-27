@@ -1,4 +1,4 @@
-import React from 'react'
+
 import TrailCard from './TrailCard'
 
 const TrailGrid = ({ trails,onToggleWalked }) => {

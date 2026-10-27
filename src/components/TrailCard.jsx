@@ -1,9 +1,9 @@
-import React from 'react'
-import { checkDifficulty } from '../utils/checkDifficulty'
+
 import DifficultyBadge from './DifficultyBadge';
 import { walkedCardBg } from '../utils/walkedStyle';
-import {useState} from 'react';
+
 import{ Link, useLocation } from "react-router-dom";
+
 
 
 const MAX_ELEVATION = 5500;

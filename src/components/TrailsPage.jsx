@@ -1,5 +1,5 @@
 
-import { useNavigate } from 'react-router-dom'   // add to your existing react-router-dom import
+import { useNavigate } from 'react-router-dom'   
 import EmptyState from './EmptyState.jsx'
 import TrailGrid from './TrailGrid.jsx';
 import SearchBar from './SearchBar.jsx';

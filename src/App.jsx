@@ -39,7 +39,7 @@ import { useState } from "react";
 
 //2.using browser router with routes
 function App() {
-  const [trails, settrails] = useState([])
+  const [trails, settrails] = useState(seedData)
 
   const toggleWalked = (trailId) => {
     settrails((prev) =>
@@ -64,7 +64,7 @@ function App() {
   //   }
   // }
 
-  //2.claude daju ko solution
+
   
 
   return (

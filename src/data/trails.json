@@ -1,0 +1,38 @@
+[
+  {
+    "trailId": "tr-001",
+    "trailName": "Annapurna Base Camp",
+    "region": "Annapurna",
+    "distance": 115,
+    "elevation": 4130,
+    "difficulty": "Moderate",
+    "days": 7,
+    "season": "Autumn",
+    "walked": true,
+    "note": "Clear skies on summit day, cold mornings."
+  },
+  {
+    "trailId": "tr-002",
+    "trailName": "Langtang Valley",
+    "region": "Langtang",
+    "distance": 65,
+    "elevation": 3800,
+    "difficulty": "Easy",
+    "days": 6,
+    "season": "Spring",
+    "walked": false,
+    "note": ""
+  },
+  {
+    "trailId": "tr-003",
+    "trailName": "Everest Base Camp",
+    "region": "Khumbu",
+    "distance": 130,
+    "elevation": 5364,
+    "difficulty": "Hard",
+    "days": 12,
+    "season": "Autumn",
+    "walked": false,
+    "note": ""
+  }
+]

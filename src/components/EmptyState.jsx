@@ -1,5 +1,5 @@
 const EmptyState = ({ title, message, actionLabel, onAction }) => (
-  <div className="flex flex-col items-center text-center gap-3 p-10 bg-slate-100 rounded-2xl">
+  <div className="flex flex-col items-center text-center gap-3 p-10 w-[50%] mx-auto bg-slate-100 rounded-2xl">
     <p className="text-xl font-bold">{title}</p>
     <p className="text-gray-600 max-w-md">{message}</p>
     <button

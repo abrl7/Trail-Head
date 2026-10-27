@@ -1,9 +1,9 @@
-import React from 'react'
+
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import { useContext } from 'react';
-import trailContext from '../context/trailContext.js';
+
+
 
 // 1. without react-hook-form,
 const LogTrailPage = ({ trails, settrails }) => {
