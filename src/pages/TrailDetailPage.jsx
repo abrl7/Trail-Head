@@ -1,10 +1,13 @@
-import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import DifficultyBadge from './DifficultyBadge.jsx';
-import { walkedCardBg } from '../utils/walkedStyle.js';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useTrails } from '../hooks/useTrails.js'
+import DifficultyBadge from '../components/DifficultyBadge.jsx'
+import WalkedToggle from '../components/WalkedToggle.jsx'
+import { walkedCardBg } from '../utils/walkedStyle.js'
 
 
-const TrailDetailPage = ({ trails, onToggleWalked, onRemove }) => {
-  const { id } = useParams();
+const TrailDetailPage = () => {
+   const { id } = useParams()
+  const { trails, removeTrail } = useTrails()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -29,7 +32,7 @@ const TrailDetailPage = ({ trails, onToggleWalked, onRemove }) => {
 
   const handleRemove = () => {
     if (!window.confirm(`Remove "${trail.trailName}"?`)) return
-    onRemove(trail.trailId)
+    removeTrail(trail.trailId)
     navigate(backTo, { replace: true })
   }
 
@@ -46,12 +49,7 @@ const TrailDetailPage = ({ trails, onToggleWalked, onRemove }) => {
             {/* <p className={checkDifficulty(trail.difficulty)}>{trail?.difficulty}</p> */}
             <DifficultyBadge difficulty={trail?.difficulty} />
 
-            <button
-              onClick={() => onToggleWalked(trail.trailId)}
-              className='ml-auto text-sm px-3 py-1 rounded-lg bg-white border border-gray-300 hover:bg-gray-100'
-            >
-              {trail.walked ? 'Mark as not walked' : 'Mark as walked'}
-            </button>
+            <div className="ml-auto"><WalkedToggle trail={trail} /></div>
           </div>
         </div>
 
@@ -74,6 +72,7 @@ const TrailDetailPage = ({ trails, onToggleWalked, onRemove }) => {
           >
             Remove trail
           </button>
+          
         </div>
       </div>
       <Link to={backTo}>

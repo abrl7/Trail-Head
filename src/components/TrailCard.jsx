@@ -1,14 +1,14 @@
 
 import DifficultyBadge from './DifficultyBadge';
 import { walkedCardBg } from '../utils/walkedStyle';
-
+import WalkedToggle from './WalkedToggle.jsx'
 import{ Link, useLocation } from "react-router-dom";
 
 
 
 const MAX_ELEVATION = 5500;
 
-const TrailCard = ({ trail, onToggleWalked }) => {
+const TrailCard = ({ trail}) => {
   const elevation = Number(trail?.elevation) || 0;
   const elevationPercent = Math.min(Math.max((elevation / MAX_ELEVATION) * 100, 0), 100);
 
@@ -28,11 +28,7 @@ const TrailCard = ({ trail, onToggleWalked }) => {
             <p className={trail?.walked ? "bg-green-600 text-white px-2 text-sm p-1 rounded-lg" : "bg-red-600 px-2 text-white text-sm p-1 rounded-lg"}>{trail?.walked ? 'Walked' : 'Not Walked'}</p>
             {/* <p className={checkDifficulty(trail?.difficulty)}>{trail?.difficulty}</p> */}
             <DifficultyBadge difficulty={trail?.difficulty} />
-            <button
-            onClick={() => onToggleWalked(trail.trailId)}
-            className='ml-auto text-sm px-3 py-1 rounded-lg bg-white border border-gray-300 hover:bg-gray-100'>
-            {trail.walked ? 'Mark as not walked' : 'Mark as walked'}
-          </button>
+            <div className="ml-auto"><WalkedToggle trail={trail} /></div>
           </div>
         </div>
 
