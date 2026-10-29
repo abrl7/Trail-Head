@@ -115,11 +115,7 @@ const TrailsPage = () => {
 
         </div>
         <div>
-          {/* {matchTrail.length === 0 ? (
-            <div className="text-red-500 text-center p-6">No matched trails</div>
-          ) : (
-            <TrailGrid trails={matchTrail} onToggleWalked={onToggleWalked} />
-          )} */}
+          
           {content}
         </div>
       </div>

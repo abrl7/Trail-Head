@@ -1,5 +1,5 @@
 import { createContext, useState, useCallback, useMemo } from 'react'
-import seedTrails from '../data/trails.json'   // or useState([]) if you don't have the file yet
+import seedTrails from '../data/trails.json'   
 
 // Named export: only the hook file imports this. Components never do.
 export const TrailsContext = createContext(null)
@@ -13,7 +13,7 @@ const nextTrailId = (trails) => {
 }
 
 export const TrailsProvider = ({ children }) => {
-  const [trails, setTrails] = useState(seedTrails)
+  const [trails, setTrails] = useState([])
 
   const toggleWalked = useCallback((trailId) => {
     setTrails((prev) =>
