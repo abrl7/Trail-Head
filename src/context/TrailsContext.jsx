@@ -13,7 +13,7 @@ const nextTrailId = (trails) => {
 }
 
 export const TrailsProvider = ({ children }) => {
-  const [trails, setTrails] = useState([])
+  const [trails, setTrails] = useState(seedTrails)
 
   const toggleWalked = useCallback((trailId) => {
     setTrails((prev) =>
