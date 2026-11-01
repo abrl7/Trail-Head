@@ -4,14 +4,12 @@ import { useFilteredTrails } from '../hooks/useFilteredTrails.js'
 
 const TrailGrid = () => {
   const filtered = useFilteredTrails()
-
   return (
-    <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 p-6">
+    <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
       {filtered.map((trail) => (
-        <TrailCard key={trail.trailId} trail={trail} />
+        <li key={trail.trailId}><TrailCard trail={trail} /></li>
       ))}
-    </div>
+    </ul>
   )
 }
-
 export default TrailGrid

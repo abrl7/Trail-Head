@@ -7,3 +7,11 @@
   text-underline-offset: 10px;
   
 }
+
+html { color-scheme: dark; }
+
+/* One visible focus style for every button, link and input */
+:focus-visible {
+  outline: 2px solid #818cf8;   /* indigo-400 */
+  outline-offset: 2px;
+}

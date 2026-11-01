@@ -1,20 +1,19 @@
-import React from 'react'
-import {NavLink} from "react-router-dom";
 
+import NavItem from './NavItem.jsx'
 
-const NavBar = () => {
-  return (
-    <>
-      <nav className='bg-blue-200 rounded-full text-black flex justify-between items-center px-5 mx-5 ' >
-        <div className='logo px-5 text-3xl font-bold '>LOGO</div>
-        <ul className=' flex gap-15 text-3xl justify-center items-center h-20 px-5'>
-         <NavLink to="/trails" className={(e)=>{return e.isActive?"active-nav":""}} > <li>Trials</li> </NavLink>
-          <NavLink to="/log" className={(e)=>{return e.isActive?"active-nav":""}}> <li>Log a Trial</li> </NavLink>
-          <NavLink to="/stats" className={(e)=>{return e.isActive?"active-nav":""}}> <li>Stats</li> </NavLink>
-        </ul>
-      </nav>
-    </>
-  )
-}
+const LINKS = [
+  { to: '/trails', label: 'Trails' },
+  { to: '/log', label: 'Log a trail' },
+  { to: '/stats', label: 'Stats' },
+]
 
-export default NavBar
+const Nav = () => (
+  <nav aria-label="Main">
+    <ul className="flex gap-2">
+      {LINKS.map((link) => (
+        <li key={link.to}><NavItem {...link} /></li>
+      ))}
+    </ul>
+  </nav>
+)
+export default Nav
