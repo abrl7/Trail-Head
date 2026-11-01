@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from '../components/Header.jsx';
 import Footer from '../components/Footer.jsx';
 import NavBar from '../components/NavBar.jsx';
+import { TrailsProvider } from "../context/TrailsContext.jsx";
 
 export default function RootLayout() {
   return (
@@ -11,7 +12,9 @@ export default function RootLayout() {
           <Header />
           <NavBar />
           <main className='flex-1'>
-            <Outlet />
+            {/* <TrailsProvider> */}
+              <Outlet />
+            {/* </TrailsProvider> */}
           </main>
           <Footer />
         </div>

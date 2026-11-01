@@ -1,7 +1,9 @@
 
 import { Link } from "react-router-dom";
+import {useTrails} from '../hooks/useTrails.js'
 
 export default function NotFound() {
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-4">
       <h1 className="text-4xl font-bold">404</h1>
