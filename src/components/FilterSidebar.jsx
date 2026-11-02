@@ -43,7 +43,7 @@
 
 // export default FilterSidebar;
 
-
+import { ui } from '../utils/ui.js'
 import { useSearchParams } from 'react-router-dom'
 import FilterGroup from './FilterGroup.jsx'
 
@@ -51,16 +51,16 @@ const REGIONS = ['All', 'Annapurna', 'Langtang', 'Khumbu', 'Manaslu']
 const DIFFICULTIES = ['All', 'Easy', 'Moderate', 'Hard']
 
 const FilterSidebar = () => {
-  const [, setSearchParams] = useSearchParams()
 
+  const [, setSearchParams] = useSearchParams()
   return (
-    <aside className="w-56 shrink-0 bg-slate-100 rounded-2xl p-4 flex flex-col gap-4 h-fit">
+    <aside
+      aria-label="Filters"
+      className={`${ui.surface} flex w-full shrink-0 flex-col gap-4 p-4 lg:sticky lg:top-6 lg:w-64 lg:self-start`}
+    >
       <FilterGroup label="Region" param="region" options={REGIONS} />
       <FilterGroup label="Difficulty" param="difficulty" options={DIFFICULTIES} />
-      <button
-        onClick={() => setSearchParams({})}
-        className="bg-red-500 text-white p-2 rounded-xl text-sm font-bold"
-      >
+      <button type="button" onClick={() => setSearchParams({})} className={ui.btnSecondary}>
         Clear filters
       </button>
     </aside>

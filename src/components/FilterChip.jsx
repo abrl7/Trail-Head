@@ -7,17 +7,17 @@ const FilterChip = ({ param, value }) => {
 
   return (
     <button
+      type="button"
       onClick={() => setCurrent(value)}
       aria-pressed={active}
-      className={`px-3 py-1 rounded-full text-sm border ${
+      className={`rounded-full border px-4 py-2 text-sm ${
         active
-          ? 'bg-blue-500 text-white border-blue-500'
-          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+          ? 'border-indigo-400 bg-indigo-700 font-semibold text-white'
+          : 'border-slate-600 text-slate-200 hover:bg-slate-800'
       }`}
     >
       {value}
     </button>
   )
 }
-
 export default FilterChip
