@@ -2,87 +2,95 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useTrails } from '../hooks/useTrails.js'
 import DifficultyBadge from '../components/DifficultyBadge.jsx'
 import WalkedToggle from '../components/WalkedToggle.jsx'
-import { walkedCardBg } from '../utils/walkedStyle.js'
+import ElevationBar from '../components/ElevationBar.jsx'
+import {walkedCardBg} from '../utils/walkedStyle.js'
+import { ui } from '../utils/ui.js'
 
+const BackLink = ({ to }) => (
+  <Link to={to} className="inline-flex items-center gap-2 rounded-xl py-2 text-base font-medium text-slate-200 hover:text-white hover:underline">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12" />
+      <polyline points="12 19 5 12 12 5" />
+    </svg>
+    Back to trails
+  </Link>
+)
 
 const TrailDetailPage = () => {
-   const { id } = useParams()
-  const { trails, removeTrail } = useTrails()
+  const { id } = useParams()
+  const{ trails, removeTrail } = useTrails()
   const location = useLocation()
   const navigate = useNavigate()
 
+  // The card stored the filtered list URL in router state, so Back keeps the filters
   const backTo = location.state?.from || '/trails'
-
-  // const { trails } = useContext(trailContext);
-
-  const trail = trails.find((t) => t.trailId === id);
-
+  const trail = trails.find((t) => t.trailId === id)
 
   if (!trail) {
     return (
-      <div className='p-4 text-red-500'>
-        <p>Trail not found.</p>
-        <Link to={backTo}>
-          <button className='bg-blue-500 text-white px-4 py-2 rounded-lg' >
-            Return to Trails List
-          </button></Link>
+      <div className="flex flex-col gap-4">
+        <BackLink to={backTo} />
+        <div className={`${ui.surface} flex flex-col items-start gap-4 p-6`}>
+          <h1 className={ui.title}>Trail not found</h1>
+          <p className={ui.body}>
+            There is no trail with the id “{id}”. It may have been removed.
+          </p>
+          <Link to="/trails" className={ui.btnPrimary}>See all trails</Link>
+        </div>
       </div>
-    );
+    )
   }
 
   const handleRemove = () => {
-    if (!window.confirm(`Remove "${trail.trailName}"?`)) return
+    if (!window.confirm(`Remove “${trail.trailName}”? This can't be undone.`)) return
     removeTrail(trail.trailId)
     navigate(backTo, { replace: true })
   }
 
+  const facts = [
+    ['Region', trail.region || '—'],
+    ['Season', trail.season || '—'],
+    ['Distance', `${trail.distance} km`],
+    ['Elevation', `${Number(trail.elevation).toLocaleString()} m`],
+    ['Days', trail.days],
+    ['Walked', trail.walked ? 'Yes' : 'No'],
+  ]
+
   return (
-    <>
-      <div className={`${walkedCardBg(trail.walked)} mx-auto w-2/3 p-4 rounded-lg shadow-md m-4`}>
-        {/* div1 */}
-        <div className="heading flex flex-col gap-2 p-2">
-          <p className='text-sm font-bold text-gray-600'>{trail?.region}</p>
-          <h1 className='text-3xl font-bold'>{trail?.trailName}</h1>
-          <div className='flex gap-2'>
+    <div className="flex flex-col gap-4">
+      <BackLink to={backTo} />
 
-            <p className={trail?.walked ? "bg-green-600 text-white px-2 text-sm p-1 rounded-lg" : "bg-red-600 px-2 text-white text-sm p-1 rounded-lg"}>{trail?.walked ? 'Walked' : 'Not Walked'}</p>
-            {/* <p className={checkDifficulty(trail.difficulty)}>{trail?.difficulty}</p> */}
-            <DifficultyBadge difficulty={trail?.difficulty} />
-
-            <div className="ml-auto"><WalkedToggle trail={trail} /></div>
+      <article className={`flex flex-col gap-6 rounded-2xl border p-4 sm:p-6 ${walkedCardBg(trail.walked)}`}>
+        <header className="flex flex-col gap-4">
+          <h1 className="wrap-break-word text-2xl font-bold text-slate-50">{trail.trailName}</h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <DifficultyBadge difficulty={trail.difficulty} />
+            <WalkedToggle trail={trail} />
+            <button type="button" onClick={handleRemove} className={ui.btnSecondary}>
+              Remove trail
+            </button>
           </div>
-        </div>
+        </header>
 
-        {/* div2 */}
-        <div className="data flex gap-3 p-2">
-          <div className='p-4 w-1/4 bg-slate-200 rounded-2xl flex flex-col'><p className='text-sm font-bold text-gray-600'>Season:</p> <p className='text-2xl font-bold'>{trail?.season}</p></div>
-          <div className='p-4 w-1/4 bg-slate-200 rounded-2xl flex flex-col'><p className='text-sm font-bold text-gray-600'>Distance:</p> <p className='text-2xl font-bold'>{trail?.distance} km</p></div>
-          <div className='p-4 w-1/4 bg-slate-200 rounded-2xl flex flex-col'><p className='text-sm font-bold text-gray-600'>Elevation:</p> <p className='text-2xl font-bold'>{trail?.elevation} m</p> </div>
-          <div className='p-4 w-1/4 bg-slate-200 rounded-2xl flex flex-col'><p className='text-sm font-bold text-gray-600'>Days:</p> <p className='text-2xl font-bold'>{trail?.days}</p></div>
+        <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {facts.map(([label, value]) => (
+            <div key={label} className="rounded-xl bg-slate-800 p-4">
+              <dt className={ui.label}>{label}</dt>
+              <dd className="mt-1 text-base font-semibold text-slate-100">{value}</dd>
+            </div>
+          ))}
+        </dl>
 
-        </div>
-        {/* div3 */}
-        <div className="note p-2">
-          <div className='p-4 flex flex-col rounded-2xl bg-slate-200 '>
-            <p className='text-sm font-bold text-gray-600'>Note:</p> <p className='text-md overflow-y-auto wrap-break-word whitespace-pre-wrap'>{trail?.note}</p>
-          </div>
-          <button
-            onClick={handleRemove}
-            className='mt-3 px-3 py-1 rounded-lg bg-red-600 text-white hover:bg-red-700'
-          >
-            Remove trail
-          </button>
-          
-        </div>
-      </div>
-      <Link to={backTo}>
-        <button className='bg-blue-500 text-white px-4 py-2 rounded-lg' >
-          Return to Trails List
-        </button></Link>
+        <ElevationBar elevation={trail.elevation} />
 
-
-    </>
-
+        <section aria-labelledby="note-heading" className="flex flex-col gap-2">
+          <h2 id="note-heading" className={ui.label}>Note</h2>
+          <p className="whitespace-pre-wrap wrap-break-word text-base text-slate-200">
+            {trail.note || 'No notes added.'}
+          </p>
+        </section>
+      </article>
+    </div>
   )
 }
 

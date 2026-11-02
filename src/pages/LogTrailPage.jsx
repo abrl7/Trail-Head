@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrails } from '../hooks/useTrails.js'
+import { ui } from '../utils/ui.js'
 
 const EMPTY_FORM = {
   trailName: '',
@@ -14,191 +15,140 @@ const EMPTY_FORM = {
   note: '',
 }
 
+const REGIONS = ['Annapurna', 'Langtang', 'Khumbu', 'Manaslu']
+const DIFFICULTIES = ['Easy', 'Moderate', 'Hard']
+const SEASONS = ['Spring', 'Summer', 'Autumn', 'Winter']
+
+const Field = ({ id, label, children }) => (
+  <div className="flex flex-col gap-2">
+    <label htmlFor={id} className={ui.label}>{label}</label>
+    {children}
+  </div>
+)
+
 const LogTrailPage = () => {
   const { addTrail } = useTrails()
   const navigate = useNavigate()
+  const nameRef = useRef(null)
 
-  const [trailForm, setTrailForm] = useState(EMPTY_FORM)
-  const [reqTrailName, setReqTrailName] = useState(true)
+  const [form, setForm] = useState(EMPTY_FORM)
+  const [nameError, setNameError] = useState(false)
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target
-    setTrailForm((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }))
+    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
-  const handleAddTrail = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (!trailForm.trailName.trim()) {
-      setReqTrailName(false)
+    if (!form.trailName.trim()) {
+      setNameError(true)
+      nameRef.current?.focus()   // send keyboard and screen reader users to the problem
       return
     }
-    setReqTrailName(true)
+    setNameError(false)
 
-    // The provider builds the ID and returns the finished trail
     const created = addTrail({
-      ...trailForm,
-      trailName: trailForm.trailName.trim(),
-      distance: Number(trailForm.distance) || 0,
-      elevation: Number(trailForm.elevation) || 0,
-      days: Number(trailForm.days) || 0,
+      ...form,
+      trailName: form.trailName.trim(),
+      distance: Number(form.distance) || 0,
+      elevation: Number(form.elevation) || 0,
+      days: Number(form.days) || 0,
     })
-
     navigate(`/trails/${created.trailId}`)
   }
 
+  const selectClass = `${ui.input} px-4`
+  const inputClass = `${ui.input} px-4`
+
   return (
-    <div className="formContainer m-5">
-      <form
-        className="bg-blue-50 mx-auto w-[60vw] p-5 rounded-xl min-h-[60vh]"
-        onSubmit={handleAddTrail}
-      >
-        <div className="act-form flex flex-col gap-5">
+    <div className="mx-auto w-full max-w-2xl">
+      <h1 className={`${ui.title} mb-6`}>Log a trail</h1>
 
-          <div className="trailName flex flex-col gap-1">
-            <label className="font-bold p-1" htmlFor="trailName">Trail Name:</label>
-            <input
-              className="bg-white p-2 rounded-2xl"
-              type="text"
-              placeholder="Enter trail name"
-              name="trailName"
-              id="trailName"
-              value={trailForm.trailName}
-              onChange={handleChange}
-            />
-            {!reqTrailName && <span className="text-red-500">Trail name is required</span>}
-          </div>
+      <form onSubmit={handleSubmit} noValidate className={`${ui.surface} flex flex-col gap-6 p-4 sm:p-6`}>
 
-          <div className="flex flex-col gap-1">
-            <label className="font-bold p-1" htmlFor="region">Region:</label>
-            <select
-              className="bg-white p-2 rounded-2xl"
-              name="region"
-              id="region"
-              value={trailForm.region}
-              onChange={handleChange}
-            >
+        <Field id="trailName" label="Trail name">
+          <input
+            ref={nameRef}
+            id="trailName"
+            name="trailName"
+            type="text"
+            value={form.trailName}
+            onChange={handleChange}
+            placeholder="e.g. Annapurna Base Camp"
+            aria-required="true"
+            aria-invalid={nameError}
+            aria-describedby={nameError ? 'trailName-error' : undefined}
+            className={inputClass}
+          />
+          {nameError && (
+            <p id="trailName-error" role="alert" className="text-sm font-medium text-rose-300">
+              Trail name is required.
+            </p>
+          )}
+        </Field>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <Field id="region" label="Region">
+            <select id="region" name="region" value={form.region} onChange={handleChange} className={selectClass}>
               <option value="">Select a region</option>
-              <option value="Annapurna">Annapurna</option>
-              <option value="Langtang">Langtang</option>
-              <option value="Khumbu">Khumbu</option>
-              <option value="Manaslu">Manaslu</option>
+              {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
-          </div>
+          </Field>
 
-          <div className="flex gap-2">
-            <div className="flex flex-col gap-1 w-1/2">
-              <label className="font-bold p-1" htmlFor="difficulty">Difficulty:</label>
-              <select
-                className="bg-white p-2 rounded-2xl"
-                name="difficulty"
-                id="difficulty"
-                value={trailForm.difficulty}
-                onChange={handleChange}
-              >
-                <option value="">Select a difficulty</option>
-                <option value="Easy">Easy</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Hard">Hard</option>
-              </select>
-            </div>
+          <Field id="difficulty" label="Difficulty">
+            <select id="difficulty" name="difficulty" value={form.difficulty} onChange={handleChange} className={selectClass}>
+              <option value="">Select a difficulty</option>
+              {DIFFICULTIES.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </Field>
 
-            <div className="flex flex-col gap-1 w-1/2">
-              <label className="font-bold p-1" htmlFor="season">Season:</label>
-              <select
-                className="bg-white p-2 rounded-2xl"
-                name="season"
-                id="season"
-                value={trailForm.season}
-                onChange={handleChange}
-              >
-                <option value="">Select a season</option>
-                <option value="Spring">Spring</option>
-                <option value="Summer">Summer</option>
-                <option value="Autumn">Autumn</option>
-                <option value="Winter">Winter</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <div className="flex gap-1 w-1/3">
-              <label className="font-bold py-2 w-1/2" htmlFor="distance">Distance (km)</label>
-              <input
-                className="bg-white p-2 rounded-2xl w-1/2"
-                type="number"
-                min="0"
-                placeholder="Enter distance"
-                name="distance"
-                id="distance"
-                value={trailForm.distance}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="flex gap-1 w-1/3">
-              <label className="font-bold py-2 w-1/2" htmlFor="elevation">Elevation (m)</label>
-              <input
-                className="bg-white p-2 rounded-2xl w-1/2"
-                type="number"
-                min="0"
-                placeholder="Enter elevation"
-                name="elevation"
-                id="elevation"
-                value={trailForm.elevation}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="flex gap-1 w-1/3">
-              <label className="font-bold py-2 w-1/2 text-center" htmlFor="days">Days</label>
-              <input
-                className="bg-white p-2 rounded-2xl w-1/2"
-                type="number"
-                min="0"
-                placeholder="Enter days"
-                name="days"
-                id="days"
-                value={trailForm.days}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-1">
-            <label className="font-bold p-1" htmlFor="walked">Walked:</label>
-            <input
-              className="bg-white p-2 rounded-2xl"
-              type="checkbox"
-              name="walked"
-              id="walked"
-              checked={trailForm.walked}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="font-bold p-1" htmlFor="note">Note:</label>
-            <textarea
-              className="bg-white p-2 rounded-2xl"
-              placeholder="Enter note"
-              name="note"
-              id="note"
-              value={trailForm.note}
-              onChange={handleChange}
-              rows={4}
-            />
-          </div>
-
-          <div className="flex gap-1 justify-center">
-            <button className="bg-blue-500 text-white p-2 rounded-2xl" type="submit">
-              Add Trail
-            </button>
-          </div>
+          <Field id="season" label="Season">
+            <select id="season" name="season" value={form.season} onChange={handleChange} className={selectClass}>
+              <option value="">Select a season</option>
+              {SEASONS.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </Field>
         </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <Field id="distance" label="Distance (km)">
+            <input id="distance" name="distance" type="number" inputMode="decimal" min="0" step="any"
+              value={form.distance} onChange={handleChange} placeholder="0" className={inputClass} />
+          </Field>
+
+          <Field id="elevation" label="Highest point (m)">
+            <input id="elevation" name="elevation" type="number" inputMode="numeric" min="0"
+              value={form.elevation} onChange={handleChange} placeholder="0" className={inputClass} />
+          </Field>
+
+          <Field id="days" label="Days">
+            <input id="days" name="days" type="number" inputMode="numeric" min="0"
+              value={form.days} onChange={handleChange} placeholder="0" className={inputClass} />
+          </Field>
+        </div>
+
+        <label htmlFor="walked" className="flex items-center gap-4 text-base text-slate-200">
+          <input
+            id="walked"
+            name="walked"
+            type="checkbox"
+            checked={form.walked}
+            onChange={handleChange}
+            className="h-5 w-5 accent-emerald-500"
+          />
+          I have walked this trail
+        </label>
+
+        <Field id="note" label="Note">
+          <textarea id="note" name="note" rows={4} value={form.note} onChange={handleChange}
+            placeholder="Weather, conditions, teahouses..." className={inputClass} />
+        </Field>
+
+        <button type="submit" className={`${ui.btnPrimary} w-full sm:w-auto sm:self-end`}>
+          Add trail
+        </button>
       </form>
     </div>
   )

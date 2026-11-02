@@ -84,6 +84,7 @@ import FilterSidebar from '../components/FilterSideBar.jsx'
 import SearchBar from '../components/SearchBar.jsx'
 import TrailGrid from '../components/TrailGrid.jsx'
 import EmptyState from '../components/EmptyState.jsx'
+import { ui } from '../utils/ui.js'
 
 const TrailsPage = () => {
   const { trails } = useTrails()
@@ -120,13 +121,17 @@ const TrailsPage = () => {
   }
 
   return (
-    <div className="flex gap-4 p-4">
-      <FilterSidebar />
-      <div className="flex-1">
-        <SearchBar />
-        {content}
-      </div>
-    </div>
+    <div className="flex flex-col gap-6 lg:flex-row">
+    <FilterSidebar />
+    <section className="flex min-w-0 flex-1 flex-col gap-4">
+      <h1 className={ui.title}>Trails</h1>
+      <SearchBar />
+      <p role="status" className={ui.label}>
+        Showing {filtered.length} of {trails.length} trails
+      </p>
+      {content}
+    </section>
+  </div>
   )
 }
 

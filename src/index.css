@@ -1,13 +1,5 @@
 @import "tailwindcss";
 
-.active-nav {
-  color:rgb(20, 86, 185);
-  font-weight: bold;
-  text-decoration: underline;
-  text-underline-offset: 10px;
-  
-}
-
 html { color-scheme: dark; }
 
 /* One visible focus style for every button, link and input */

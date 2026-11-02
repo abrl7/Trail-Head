@@ -11,5 +11,5 @@
 
 // components/SearchBar.jsx
 import SearchInput from './SearchInput.jsx'
-const SearchBar = () => <div className='pb-2'><SearchInput /></div>
+const SearchBar = () => <SearchInput />
 export default SearchBar

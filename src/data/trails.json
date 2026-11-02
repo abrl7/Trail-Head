@@ -21,7 +21,7 @@
     "days": 6,
     "season": "Spring",
     "walked": false,
-    "note": ""
+    "note": "Test trail description for Langtang Valley. Beautiful views of the valley and surrounding peaks."
   },
   {
     "trailId": "tr-003",
@@ -33,6 +33,6 @@
     "days": 12,
     "season": "Autumn",
     "walked": false,
-    "note": ""
+    "note": "Test trail description for Everest Base Camp. Challenging trek with stunning views of the Himalayas."
   }
 ]

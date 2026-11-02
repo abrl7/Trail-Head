@@ -14,9 +14,8 @@ const Ridgeline = ({ completion }) => {
     <svg
       viewBox={`0 0 ${RIDGE_W} ${RIDGE_H}`}
       preserveAspectRatio="none"
-      className="w-full h-40"
-      role="img"
-      aria-label={`Ridgeline progress: ${Math.round(pct)}% of trails walked`}
+      className="h-40 w-full"
+      aria-hidden="true"
     >
       <defs>
         <clipPath id="ridge-progress">
@@ -25,10 +24,10 @@ const Ridgeline = ({ completion }) => {
       </defs>
 
       {/* 1. Muted full ridgeline */}
-      <path d={RIDGE_PATH} className="fill-slate-200" />
+      <path d={RIDGE_PATH} className="fill-slate-800" />
 
       {/* 2. Same path, accent colour, clipped to the completion width */}
-      <path d={RIDGE_PATH} className="fill-green-600" clipPath="url(#ridge-progress)" />
+      <path d={RIDGE_PATH} className="fill-emerald-500" clipPath="url(#ridge-progress)" />
     </svg>
   )
 }
