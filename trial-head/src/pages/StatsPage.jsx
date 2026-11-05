@@ -37,7 +37,7 @@ const StatsPage = () => {
         {cards.map(([label, value]) => (
           <div key={label} className={`${ui.surface} p-4`}>
             <dt className={ui.label}>{label}</dt>
-            <dd className={`${ui.title} ${label === 'Completion' ? '!text-emerald-300' : ''}`}>
+            <dd className={`${ui.title} ${label === 'Completion' ? 'text-emerald-300!' : ''}`}>
               {value}
             </dd>
           </div>

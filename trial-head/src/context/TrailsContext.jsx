@@ -1,4 +1,4 @@
-import { createContext, useState, useCallback, useMemo } from 'react'
+import { createContext, useState, useCallback, useMemo,useEffect } from 'react'
 import seedTrails from '../data/trails.json'   
 
 // Named export: only the hook file imports this. Components never do.
@@ -13,7 +13,16 @@ const nextTrailId = (trails) => {
 }
 
 export const TrailsProvider = ({ children }) => {
-  const [trails, setTrails] = useState(seedTrails)
+  const [trails, setTrails] = useState(()=>{
+    // Load from localStorage if available, otherwise use seed data
+    const stored = localStorage.getItem('trails')
+    return stored ? JSON.parse(stored) : seedTrails
+  })
+
+  // useEffect(() => {
+  //   // Save trails to localStorage whenever they change
+  //   localStorage.setItem('trails', JSON.stringify(trails))
+  // }, [trails])
 
   const toggleWalked = useCallback((trailId) => {
     setTrails((prev) =>
@@ -28,8 +37,9 @@ export const TrailsProvider = ({ children }) => {
   // Returns the new trail so the form can navigate to /trails/<newId>
   const addTrail = useCallback(
     (data) => {
-      const newTrail = { ...data, trailId: nextTrailId(trails) }
+      const newTrail = {  trailId: nextTrailId(trails),...data}
       setTrails((prev) => [...prev, newTrail])
+      localStorage.setItem('trails', JSON.stringify([...trails, newTrail]))  // Save to localStorage
       return newTrail
     },
     [trails]
