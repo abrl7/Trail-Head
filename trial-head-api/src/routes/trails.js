@@ -64,6 +64,7 @@ const nextId = () => {
 
 router.get('/', (req, res) => {
   res.json(trails)
+  
 })
 
 router.get('/:id', (req, res) => {
