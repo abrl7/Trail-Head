@@ -3,8 +3,10 @@ import { useTrails } from '../hooks/useTrails.js'
 import DifficultyBadge from '../components/DifficultyBadge.jsx'
 import WalkedToggle from '../components/WalkedToggle.jsx'
 import ElevationBar from '../components/ElevationBar.jsx'
+import DataGate from '../components/DataGate.jsx'
 import {walkedCardBg} from '../utils/walkedStyle.js'
 import { ui } from '../utils/ui.js'
+import { useState } from 'react'
 
 const BackLink = ({ to }) => (
   <Link to={to} className="inline-flex items-center gap-2 rounded-xl py-2 text-base font-medium text-slate-200 hover:text-white hover:underline">
@@ -16,11 +18,12 @@ const BackLink = ({ to }) => (
   </Link>
 )
 
-const TrailDetailPage = () => {
+const TrailDetail = () => {
   const { id } = useParams()
   const{ trails, removeTrail } = useTrails()
   const location = useLocation()
   const navigate = useNavigate()
+    const [removeError, setRemoveError] = useState('')
 
   // The card stored the filtered list URL in router state, so Back keeps the filters
   const backTo = location.state?.from || '/trails'
@@ -41,10 +44,15 @@ const TrailDetailPage = () => {
     )
   }
 
-  const handleRemove = () => {
-    if (!window.confirm(`Remove “${trail.trailName}”? This can't be undone.`)) return
-    removeTrail(trail.trailId)
-    navigate(backTo, { replace: true })
+   const handleRemove = async () => {
+    if (!window.confirm(`Remove “${trail.trailName}”? This can’t be undone.`)) return
+    setRemoveError('')
+    try {
+      await removeTrail(trail.trailId)
+      navigate(backTo, { replace: true })
+    } catch (err) {
+      setRemoveError(err.message)
+    }
   }
 
   const facts = [
@@ -69,6 +77,7 @@ const TrailDetailPage = () => {
             <button type="button" onClick={handleRemove} className={ui.btnSecondary}>
               Remove trail
             </button>
+            {removeError && <p role="alert" className="text-sm font-medium text-rose-300">{removeError}</p>}
           </div>
         </header>
 
@@ -93,5 +102,11 @@ const TrailDetailPage = () => {
     </div>
   )
 }
+
+const TrailDetailPage = () => (
+  <DataGate>
+    <TrailDetail />
+  </DataGate>
+)
 
 export default TrailDetailPage

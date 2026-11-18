@@ -84,9 +84,10 @@ import FilterSidebar from '../components/FilterSideBar.jsx'
 import SearchBar from '../components/SearchBar.jsx'
 import TrailGrid from '../components/TrailGrid.jsx'
 import EmptyState from '../components/EmptyState.jsx'
+import DataGate from '../components/DataGate.jsx'
 import { ui } from '../utils/ui.js'
 
-const TrailsPage = () => {
+const TrailsContent = () => {
   const { trails } = useTrails()
   const filtered = useFilteredTrails()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -134,5 +135,11 @@ const TrailsPage = () => {
   </div>
   )
 }
+
+const TrailsPage = () => (
+  <DataGate>
+    <TrailsContent />
+  </DataGate>
+)
 
 export default TrailsPage

@@ -33,30 +33,63 @@ const LogTrailPage = () => {
 
   const [form, setForm] = useState(EMPTY_FORM)
   const [nameError, setNameError] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+
+  //   if (!form.trailName.trim()) {
+  //     setNameError(true)
+  //     nameRef.current?.focus()   // send keyboard and screen reader users to the problem
+  //     return
+  //   }
+  //   setNameError(false)
+
+  //   const created = addTrail({
+  //     ...form,
+  //     trailName: form.trailName.trim(),
+  //     distance: Number(form.distance) || 0,
+  //     elevation: Number(form.elevation) || 0,
+  //     days: Number(form.days) || 0,
+  //   })
+  //   navigate(`/trails/${created.trailId}`)
+  // }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    if (submitting) return
 
     if (!form.trailName.trim()) {
       setNameError(true)
-      nameRef.current?.focus()   // send keyboard and screen reader users to the problem
+      nameRef.current?.focus()
       return
     }
     setNameError(false)
+    setSubmitError('')
+    setSubmitting(true)
 
-    const created = addTrail({
-      ...form,
-      trailName: form.trailName.trim(),
-      distance: Number(form.distance) || 0,
-      elevation: Number(form.elevation) || 0,
-      days: Number(form.days) || 0,
-    })
-    navigate(`/trails/${created.trailId}`)
+    try {
+      const created = await addTrail({
+        ...form,
+        trailName: form.trailName.trim(),
+        distance: Number(form.distance) || 0,
+        elevation: Number(form.elevation) || 0,
+        days: Number(form.days) || 0,
+      })
+      navigate(`/trails/${created.trailId}`)
+    } catch (err) {
+      // a 400 carries per-field messages from the server's parseBody
+      setSubmitError(
+        err.body?.errors ? Object.values(err.body.errors).join(' ') : err.message
+      )
+      setSubmitting(false)
+    }
   }
 
   const selectClass = `${ui.input} px-4`
@@ -146,8 +179,16 @@ const LogTrailPage = () => {
             placeholder="Weather, conditions, teahouses..." className={inputClass} />
         </Field>
 
-        <button type="submit" className={`${ui.btnPrimary} w-full sm:w-auto sm:self-end`}>
-          Add trail
+        {submitError && (
+          <p role="alert" className="text-sm font-medium text-rose-300">{submitError}</p>
+        )}
+
+        <button
+          type="submit"
+          aria-disabled={submitting}
+          className={`${ui.btnPrimary} w-full sm:w-auto sm:self-end`}
+        >
+          {submitting ? 'Saving…' : 'Add trail'}
         </button>
       </form>
     </div>
