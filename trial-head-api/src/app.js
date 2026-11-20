@@ -13,7 +13,16 @@ app.use((req, res) => {                       // 3. nothing matched
   res.status(404).json({ error: 'Not found' })
 })
 
-app.use((err, req, res, next) => {            // 4. error handler: four parameters
+app.use((err, req, res, next) => {
+  if (err.name === 'ValidationError') {
+    const errors = Object.fromEntries(
+      Object.entries(err.errors).map(([field, e]) => [field, e.message])
+    )
+    return res.status(400).json({ errors })
+  }
+  if (err.name === 'CastError') {
+    return res.status(400).json({ errors: { [err.path]: `Invalid value for ${err.path}` } })
+  }
   console.error(err)
   res.status(500).json({ error: 'Something went wrong' })
 })
