@@ -1,8 +1,11 @@
 // src/routes/trails.js
 import { Router } from 'express'
 import Trail from '../models/Trail.js'
+import { requireAuth, requireRole } from '../middleware/auth.js'
 
 const router = Router()
+
+const adminOnly = [requireAuth, requireRole('admin')]
 
 // The ONLY fields a client may set. Schema rules check values; this checks which fields.
 const WRITABLE = ['trailName', 'region', 'difficulty', 'season', 'distance', 'elevation', 'days', 'walked', 'note']
@@ -27,12 +30,12 @@ router.get('/:id', async (req, res) => {
   res.json(trail)
 })
 
-router.post('/', async (req, res) => {
+router.post('/',adminOnly, async (req, res) => {
   const trail = await Trail.create(pick(req.body))
   res.status(201).json(trail)
 })
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', adminOnly, async (req, res) => {
   const trail = await Trail.findByIdAndUpdate(req.params.id, pick(req.body), {
     new: true,             // return the updated document, not the old one
     runValidators: true,   // update queries skip schema validation unless you ask
@@ -41,7 +44,7 @@ router.patch('/:id', async (req, res) => {
   res.json(trail)
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', adminOnly, async (req, res) => {
   const trail = await Trail.findByIdAndDelete(req.params.id)
   if (!trail) return res.status(404).json({ error: 'Trail not found' })
   res.status(204).end()

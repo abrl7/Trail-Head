@@ -5,6 +5,8 @@ import TrailDetailPage from './pages/TrailDetailPage.jsx'
 import LogTrailPage from './pages/LogTrailPage.jsx'
 import StatsPage from './pages/StatsPage.jsx'
 import NotFound from './pages/NotFound.jsx'
+import LoginPage from './pages/LoginPage.jsx'
+import RequireAdmin from './components/RequireAdmin.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -15,8 +17,12 @@ export const router = createBrowserRouter([
       { index: true, element: <TrailsPage /> },
       { path: 'trails', element: <TrailsPage /> },
       { path: 'trails/:id', element: <TrailDetailPage /> },
-      { path: 'log', element: <LogTrailPage /> },
       { path: 'stats', element: <StatsPage /> },
+      { path: 'login', element: <LoginPage /> },
+      {
+        element: <RequireAdmin />,
+        children: [{ path: 'log', element: <LogTrailPage /> }],
+      },
     ],
   },
 ])

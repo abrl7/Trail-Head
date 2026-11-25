@@ -2,6 +2,7 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import User from '../models/User.js'
+import { requireAuth } from '../middleware/auth.js'
 
 const router = Router()
 
@@ -33,7 +34,7 @@ router.post('/login', async (req, res) => {
   res.json(user)
 })
 
-router.get('/me', async (req, res) => {
+router.get('/me',requireAuth, async (req, res) => {
   const user = req.session.userId ? await User.findById(req.session.userId) : null
   if (!user) return res.status(401).json({ error: 'Not authenticated' })
   res.json(user)
